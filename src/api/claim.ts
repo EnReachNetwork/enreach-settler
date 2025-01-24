@@ -58,7 +58,7 @@ export const getClaimProof = async (
       );
       const tree = parseBalanceMap(oldFormat);
       res.status(200).json({
-        code: 10001,
+        code: 0,
         data: { index: mid, tree },
       });
     } else {
