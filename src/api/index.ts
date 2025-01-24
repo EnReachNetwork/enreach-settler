@@ -9,7 +9,7 @@ export const startAPIServer = (port: number = defaultPort) => {
   const app = express();
   app.use(express.json());
 
-  app.get("/claim/:address", getClaimProof);
+  app.get("/claim", getClaimProof);
 
   app.listen(port, () => {
     logger.info(`API server listening on port ${port}`);

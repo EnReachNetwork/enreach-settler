@@ -10,6 +10,7 @@ import { RewardsDistributionRoot } from "../types/chain.js";
 import { queryEpochWorkload } from "../storage/epoch.js";
 import BalanceTree from "../utils/balance-tree.js";
 import { logger } from "../utils/logger.js";
+import { OldFormat, parseBalanceMap } from "../utils/parse-balance-map.js";
 
 export const getClaimProof = async (
   req: Request,
@@ -41,50 +42,16 @@ export const getClaimProof = async (
       const workload = queryEpochWorkload(
         root.rewardsCalculationEndEpoch.toString(),
       );
-      const content = workload.map((item) => ({
-        account: item.account,
-        amount: item.amount,
-      }));
-      const tree = new BalanceTree(content);
-      logger.success("Balance tree created");
-      const accountIndex = workload.findIndex(
-        (item) => item.account === address,
+      const oldFormat: OldFormat = Object.fromEntries(
+        workload.map((item) => [
+          item.account,
+          BigInt(item.amount).toString(16),
+        ]),
       );
-      const node = workload.find((item) => item.account === address);
-      if (!node) {
-        res.status(200).json({
-          code: 10001,
-          data: {},
-        });
-        return;
-      }
-      const proof = tree.getProof(accountIndex, address, node?.amount);
-      console.log(
-        node,
-        accountIndex,
-        proof,
-        content,
-        BalanceTree.toNode(accountIndex, address, node?.amount).toString("hex"),
-      );
-      console.log(
-        BalanceTree.verifyProof(
-          accountIndex,
-          address,
-          node?.amount,
-          [],
-          Buffer.from(tree.getHexRoot()),
-        ),
-      );
+      const tree = parseBalanceMap(oldFormat);
       res.status(200).json({
-        code: 0,
-        data: {
-          rootIndex: mid,
-          merkleRoot: root.merkleRoot,
-          accountIndex,
-          address,
-          amount: node.amount,
-          proof,
-        },
+        code: 10001,
+        data: tree,
       });
     } else {
       res.status(200).json({

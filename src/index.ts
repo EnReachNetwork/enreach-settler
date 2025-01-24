@@ -70,7 +70,7 @@ program
   .version("0.0.1")
   .action(async () => {
     initStorage();
-    setInterval(handleWorkload, 2000);
+    setInterval(handleWorkload, 300);
     startAPIServer();
 
     await handleWorkload();
