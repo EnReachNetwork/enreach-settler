@@ -25,7 +25,7 @@ export const getClaimProof = async (
     let left = 500n;
     let right = index;
     let mid = 0n;
-    while (left + 1n <= right) {
+    while (left + 1n < right) {
       mid = (left + right + 1n) / 2n;
       console.log(left, right, mid);
       root = await getRewardsDistributionRoot(mid);
