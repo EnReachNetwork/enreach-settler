@@ -22,7 +22,7 @@ export const getClaimProof = async (
 
     let index = await getRewardsDistributionRootCount();
     let root: RewardsDistributionRoot | undefined = undefined;
-    let left = 500n;
+    let left = 810n;
     let right = index;
     let mid = 0n;
     while (left + 1n < right) {
