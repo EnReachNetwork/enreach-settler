@@ -13,6 +13,7 @@ import { logger } from "./utils/logger.js";
 import { parseUnits } from "viem";
 import { initStorage } from "./storage/init.js";
 import { startRewardModule } from "./modules/reward.js";
+import { registerSubmitCommand } from "./commands/submit.js";
 
 const program = new Command();
 
@@ -85,6 +86,6 @@ program
     await startRewardModule();
   });
 
-registerHelloCommand(program);
+registerSubmitCommand(program);
 
 program.parse();
