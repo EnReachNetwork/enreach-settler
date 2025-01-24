@@ -44,7 +44,7 @@ export const getClaimProof = async (
     //   }
     // }
 
-    const finalRoot = await getRewardsDistributionRoot(mid - 1n);
+    const finalRoot = await getRewardsDistributionRoot(mid);
 
     logger.success(`Found root ${JSON.stringify(finalRoot)}`);
 
