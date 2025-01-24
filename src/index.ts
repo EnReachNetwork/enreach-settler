@@ -20,6 +20,8 @@ let id = 0;
 
 async function handleWorkload() {
   const res = await getWorkload(id);
+  if (!res) return;
+
   id++;
 
   let epochWorkload = queryEpochWorkload(res.epoch);

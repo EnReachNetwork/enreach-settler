@@ -8,14 +8,18 @@ const accounts = [
   "0x1A005651ee017c8b4f1FBd0DDf7853dC4A185ED1",
 ];
 
-export const getWorkload = async (epoch: number) => {
+export const getWorkload = async (epoch: number): Promise<Workload | null> => {
   const res = await fetch(
     `http://150.109.123.18:1317/enreach/workload/workload/${epoch}`,
   ).then((r) => r.json());
 
-  return {
-    ...res?.Workload,
-    account:
-      accounts[Number((res?.Workload as Workload).epoch) % accounts.length],
-  } as Workload;
+  if (res?.Workload) {
+    return {
+      ...res?.Workload,
+      account:
+        accounts[Number((res?.Workload as Workload).epoch) % accounts.length],
+    } as Workload;
+  }
+
+  return null;
 };
