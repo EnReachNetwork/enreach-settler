@@ -22,11 +22,12 @@ export const getClaimProof = async (
 
     let index = await getRewardsDistributionRootCount();
     let root: RewardsDistributionRoot | undefined = undefined;
-    let left = 0n;
+    let left = 500n;
     let right = index;
     let mid = 0n;
-    while (left < right) {
-      mid = (left + right) / 2n;
+    while (left + 1n <= right) {
+      mid = (left + right + 1n) / 2n;
+      console.log(left, right, mid);
       root = await getRewardsDistributionRoot(mid);
       logger.info(`Checking root ${mid}, ${JSON.stringify(root)}`);
       if (Number(root.activatedAt) < Date.now() / 1000) {
@@ -35,6 +36,13 @@ export const getClaimProof = async (
         right = mid;
       }
     }
+    // for (let i = 0n; i < 300n; i++) {
+    //   root = await getRewardsDistributionRoot(index - 1n - i);
+    //   logger.info(`Checking root ${index - 1n - i}, ${JSON.stringify(root)}`);
+    //   if (root && Number(root.activatedAt) < Date.now() / 1000) {
+    //     break;
+    //   }
+    // }
 
     logger.success(`Found root ${JSON.stringify(root)}`);
 

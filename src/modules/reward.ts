@@ -1,19 +1,10 @@
-import { queryEpochIndex, queryEpochWorkload } from "../storage/epoch.js";
+import { queryEpochWorkload } from "../storage/epoch.js";
 import { readdir } from "node:fs/promises";
 import { PATHS } from "../constants/path.js";
 import { getOnlineEpoch, submitMerkleRoot } from "./chainface.js";
 import { logger } from "../utils/logger.js";
 import BalanceTree from "../utils/balance-tree.js";
 import { sleep } from "../utils/utils.js";
-
-const generateMerkleTree = async () => {
-  const files = await readdir(PATHS.EPOCH_DIR);
-  let epoch = files[0] ? BigInt(files[0].split(".")[0]) : 0n;
-
-  while (true) {
-    const workload = queryEpochWorkload(epoch.toString());
-  }
-};
 
 export const startRewardModule = async () => {
   let epoch = (await getOnlineEpoch()) as bigint;

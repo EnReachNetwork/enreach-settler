@@ -3,7 +3,12 @@ import { Command } from "commander";
 import { registerHelloCommand } from "./commands/hello.js";
 import { startAPIServer } from "./api/index.js";
 import { getWorkload } from "./actions/workload.js";
-import { queryEpochWorkload, storeEpochWorkload } from "./storage/epoch.js";
+import {
+  queryEpochWorkload,
+  queryWorkloadId,
+  storeEpochWorkload,
+  storeWorkloadId,
+} from "./storage/epoch.js";
 import { logger } from "./utils/logger.js";
 import { parseUnits } from "viem";
 import { initStorage } from "./storage/init.js";
@@ -16,13 +21,11 @@ BigInt.prototype.toJSON = function () {
   return this.toString();
 };
 
-let id = 0;
+let id = queryWorkloadId() + 1;
 
 async function handleWorkload() {
   const res = await getWorkload(id);
   if (!res) return;
-
-  id++;
 
   let epochWorkload = queryEpochWorkload(res.epoch);
   if (epochWorkload.length > 0) {
@@ -64,6 +67,8 @@ async function handleWorkload() {
   }
   logger.info("Epoch: " + res.epoch + " Score: " + res.score);
   storeEpochWorkload(res.epoch, JSON.stringify(epochWorkload));
+  id++;
+  storeWorkloadId(id);
 }
 
 program
