@@ -44,11 +44,13 @@ export const getClaimProof = async (
     //   }
     // }
 
-    logger.success(`Found root ${JSON.stringify(root)}`);
+    const finalRoot = await getRewardsDistributionRoot(mid - 1n);
+
+    logger.success(`Found root ${JSON.stringify(finalRoot)}`);
 
     if (root) {
       const workload = queryEpochWorkload(
-        root.rewardsCalculationEndEpoch.toString(),
+        finalRoot.rewardsCalculationEndEpoch.toString(),
       );
       const oldFormat: OldFormat = Object.fromEntries(
         workload.map((item) => [
