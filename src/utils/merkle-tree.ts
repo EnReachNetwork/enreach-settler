@@ -71,7 +71,6 @@ export default class MerkleTree {
 
   getProof(el: Buffer) {
     let idx = this.bufferElementPositionIndex[bufferToHex(el)];
-    console.log("get hex proof", el, idx);
 
     if (typeof idx !== "number") {
       throw new Error("Element does not exist in Merkle tree");

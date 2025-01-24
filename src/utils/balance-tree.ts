@@ -12,13 +12,6 @@ export default class BalanceTree {
 
     this.tree = new MerkleTree(
       balances.map(({ account, amount }, index) => {
-        console.log(
-          "ss",
-          BalanceTree.toNode(index, account, amount),
-          index,
-          account,
-          amount,
-        );
         return BalanceTree.toNode(index, account, amount);
       }),
     );
