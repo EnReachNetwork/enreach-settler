@@ -5,6 +5,7 @@ import { getOnlineEpoch, submitMerkleRoot } from "./chainface.js";
 import { logger } from "../utils/logger.js";
 import BalanceTree from "../utils/balance-tree.js";
 import { sleep } from "../utils/utils.js";
+import { OldFormat, parseBalanceMap } from "../utils/parse-balance-map.js";
 
 export const startRewardModule = async () => {
   let epoch = (await getOnlineEpoch()) as bigint;
@@ -28,13 +29,14 @@ export const startRewardModule = async () => {
         await sleep(2000);
         continue;
       }
-      const tree = new BalanceTree(
-        workload.map((item) => ({
-          account: item.account,
-          amount: item.amount,
-        })),
+      const oldFormat: OldFormat = Object.fromEntries(
+        workload.map((item) => [
+          item.account,
+          BigInt(item.amount).toString(16),
+        ]),
       );
-      await submitMerkleRoot(epoch, tree.getHexRoot());
+      const tree = parseBalanceMap(oldFormat);
+      await submitMerkleRoot(epoch, tree.merkleRoot);
       logger.success(`Merkle root ${epoch} submitted`);
       epoch++;
     } catch (e) {
