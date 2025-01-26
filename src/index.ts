@@ -25,11 +25,13 @@ BigInt.prototype.toJSON = function () {
 let id = queryWorkloadId() + 1;
 
 async function handleWorkload() {
+  logger.info("Handling workload: " + id);
   const res = await getWorkload(id);
   if (!res) return;
 
   let epochWorkload = queryEpochWorkload(res.epoch);
   if (epochWorkload.length > 0) {
+    logger.info(`Found existing epoch: ${res.epoch}, workload: ${id}`);
     const idx = epochWorkload.findIndex((item) => item.id === res.minerId);
     if (idx > -1) {
       epochWorkload = epochWorkload.map((item) =>
@@ -45,6 +47,7 @@ async function handleWorkload() {
       });
     }
   } else {
+    logger.info(`Not Found existing epoch: ${res.epoch}, workload: ${id}`);
     const previousEpochWorkload = queryEpochWorkload(
       (Number(res.epoch) - 1).toString(),
     );
@@ -78,7 +81,7 @@ program
   .version("0.0.1")
   .action(async () => {
     initStorage();
-    setInterval(handleWorkload, 300);
+    setInterval(handleWorkload, 1000);
     startAPIServer();
 
     await handleWorkload();
