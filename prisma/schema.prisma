@@ -13,12 +13,21 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model WorkReport {
+model Score {
   id        Int      @id @default(autoincrement())
-  peerId    String // Peer Id
-  data      Json // Store all selections as JSON
+  epoch     Int      @unique
+  data      Json
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@map("work_reports")
+  @@map("scores")
+}
+
+model Metadata {
+  id        Int      @id @default(autoincrement())
+  key       String   @unique
+  value     String
+  updatedAt DateTime @updatedAt
+
+  @@map("metadata")
 }

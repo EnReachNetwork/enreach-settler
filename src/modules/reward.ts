@@ -6,24 +6,24 @@ import { logger } from "../utils/logger.js";
 import BalanceTree from "../utils/balance-tree.js";
 import { sleep } from "../utils/utils.js";
 import { OldFormat, parseBalanceMap } from "../utils/parse-balance-map.js";
+import { getNextEpoch } from "../storage/workload.js";
+import { prisma } from "../db.js";
 
 export const startRewardModule = async () => {
-  let epoch = (await getOnlineEpoch()) as bigint;
-  const files = await readdir(PATHS.EPOCH_DIR);
-  const currentEpoch = files[0] ? BigInt(files[0].split(".")[0]) : 0n;
-
-  logger.success(`Current epoch: ${currentEpoch}`);
-  console.log(epoch);
-  if (epoch === 0n) {
-    epoch = currentEpoch;
-  } else {
-    epoch = epoch + 1n;
-  }
+  let epoch = (await getOnlineEpoch()) as number;
 
   while (true) {
     try {
+      const nextEpoch = await getNextEpoch(epoch);
+      if (!nextEpoch) {
+        await sleep(2000);
+        continue;
+      }
+
+      epoch = nextEpoch;
+
       logger.info(`Submit epoch #${epoch} merkle root`);
-      const workload = queryEpochWorkload(epoch.toString());
+      const workload = await queryEpochWorkload(epoch);
       console.log(workload);
       if (workload.length === 0) {
         await sleep(2000);

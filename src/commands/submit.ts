@@ -10,11 +10,13 @@ export function registerSubmitCommand(program: Command) {
     .description("Register miner to enreach chain")
     .option("-n, --epoch <epoch>", "epoch to submit")
     .action(async (options) => {
-      const epoch = options.epoch || "0";
-      const workload = queryEpochWorkload(epoch);
+      const epoch = parseInt(options.epoch || "0");
+      const workload = await queryEpochWorkload(epoch);
+      console.log(workload);
       if (workload.length === 0) {
         return;
       }
+
       const oldFormat: OldFormat = Object.fromEntries(
         workload.map((item) => [
           item.account,
@@ -22,9 +24,7 @@ export function registerSubmitCommand(program: Command) {
         ]),
       );
       const tree = parseBalanceMap(oldFormat);
-      console.log(oldFormat);
-      console.log(tree.merkleRoot, tree.claims, tree.tokenTotal);
       await submitMerkleRoot(epoch, tree.merkleRoot);
-      logger.success(`Merkle root ${epoch} submitted`);
+      // logger.success(`Merkle root ${epoch} submitted`);
     });
 }

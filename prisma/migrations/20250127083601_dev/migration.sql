@@ -1,7 +1,7 @@
 -- CreateTable
-CREATE TABLE `work_reports` (
+CREATE TABLE `scores` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `peerId` VARCHAR(191) NOT NULL,
+    `epoch` INTEGER NOT NULL,
     `data` JSON NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,

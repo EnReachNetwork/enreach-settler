@@ -1,7 +1,8 @@
-import { publicClient, walletClient } from "../config/chain.js";
+import { account, publicClient, walletClient } from "../config/chain.js";
 import { RewardsDistributorABI } from "../constants/rewards-distributor.js";
 import { REWARDS_DISTRIBUTOR_ADDRESS } from "../constants/index.js";
 import { RewardsDistributionRoot } from "../types/chain.js";
+import { holesky } from "viem/chains";
 
 export const getRewardsDistributionRootCount = async () => {
   const res = await publicClient.readContract({
@@ -32,12 +33,14 @@ export const getOnlineEpoch = async () => {
   });
 };
 
-export const submitMerkleRoot = async (epoch: bigint, root: string) => {
+export const submitMerkleRoot = async (epoch: number, root: string) => {
   const hash = await walletClient.writeContract({
     abi: RewardsDistributorABI,
     address: REWARDS_DISTRIBUTOR_ADDRESS,
     functionName: "submitRewardsDistributionRoot",
-    args: [root, epoch, epoch * 3600n],
+    args: [root, BigInt(epoch), BigInt(epoch) * 3600n],
+    chain: holesky,
+    account,
   });
   await publicClient.waitForTransactionReceipt({ hash });
 };
