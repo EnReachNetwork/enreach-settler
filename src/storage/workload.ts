@@ -47,14 +47,14 @@ async function handleWorkload() {
     if (idx > -1) {
       epochWorkload = epochWorkload.map((item) =>
         res.account === item.account
-          ? { ...item, value: item.amount + parseUnits(res.score, 0) }
+          ? { ...item, value: item.amount + parseUnits(res.score, 12) }
           : item,
       );
     } else {
       epochWorkload.push({
         id: res.minerId,
         account: res.account,
-        amount: parseUnits(res.score, 0),
+        amount: parseUnits(res.score, 12),
       });
     }
   } else {
@@ -66,14 +66,14 @@ async function handleWorkload() {
     if (idx > -1) {
       epochWorkload = nearestEpochWorkload.map((item) =>
         res.account === item.account
-          ? { ...item, amount: item.amount + parseUnits(res.score, 0) }
+          ? { ...item, amount: item.amount + parseUnits(res.score, 12) }
           : item,
       );
     } else {
       nearestEpochWorkload.push({
         id: res.minerId,
         account: res.account,
-        amount: parseUnits(res.score, 0),
+        amount: parseUnits(res.score, 12),
       });
       epochWorkload = [...nearestEpochWorkload];
     }
