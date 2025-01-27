@@ -10,6 +10,7 @@ import { getWorkload } from "../actions/workload.js";
 import { parseUnits } from "viem";
 import { PrismaClient } from "@prisma/client";
 import { prisma } from "../db.js";
+import { sleep } from "../utils/utils.js";
 
 export async function getNextEpoch(currentEpoch: number) {
   const nextScore = await prisma.score.findFirst({
@@ -26,8 +27,10 @@ export async function getNextEpoch(currentEpoch: number) {
 }
 
 export const startWorkloadModule = async () => {
-  await handleWorkload();
-  setInterval(handleWorkload, 1000);
+  while (true) {
+    await handleWorkload();
+    await sleep(500);
+  }
 };
 
 async function handleWorkload() {
