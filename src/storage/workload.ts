@@ -80,5 +80,5 @@ async function handleWorkload() {
   }
   logger.info("Epoch: " + res.epoch + " Score: " + res.score);
   storeEpochWorkload(epoch, epochWorkload);
-  storeWorkloadId(id + 1);
+  storeWorkloadId(id);
 }
