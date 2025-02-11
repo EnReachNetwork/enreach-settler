@@ -1,22 +1,22 @@
 export const MINERS = [
   {
-    minerId: "miner-1",
-    evmAddress: "0xDEDe0DAA3A63958d7f6544E4AD4C8b1CA66fAFe8",
+    minerId: "edge-node-1",
+    evmAddress: "0x20574f8eb8B7Bd3f6E3C0Aa749681290BB8308e9",
   },
   {
-    minerId: "miner-2",
+    minerId: "edge-node-2",
     evmAddress: "0x0c7FF051D8A472D0023343c536174575D666E15e",
   },
   {
-    minerId: "miner-3",
-    evmAddress: "0xd74021B2F1e6fe3b6d5486ED39f76fD9E6A003D1",
+    minerId: "edge-node-3",
+    evmAddress: "0x3704b7461D2Bd7Fbfd5C7ea6B0F2Bd6671F3D3AD",
   },
   {
-    minerId: "miner-4",
-    evmAddress: "0x2eaEeb898Dfe79E806D85Ae31750aB34f714C211",
+    minerId: "edge-node-4",
+    evmAddress: "0xa0Ee7A142d267C1f36714E4a8F75612F20a79720",
   },
   {
-    minerId: "miner-5",
-    evmAddress: "0xA915979b327E2574fa1f3dc6996607b6976E9E19",
+    minerId: "edge-node-5",
+    evmAddress: "0x1A005651ee017c8b4f1FBd0DDf7853dC4A185ED1",
   },
 ];
